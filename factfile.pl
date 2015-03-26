@@ -7,6 +7,7 @@ state(init).
 state(idle).
 state(monitoring).
 state(error_diagnosis).
+state(safe_shutdown).
 
 % States under init state
 state(boot_hw).
@@ -59,5 +60,34 @@ superstate(lockdown, safe_status).
 superstate(error_diagnosis, error_rcv).
 superstate(error_diagnosis, applicable_rescue).
 superstate(error_diagnosis, reset_module_data).
+
+% Transitions within top-level
+transition(dormant, exit, kill, null, null).
+transition(dormant, init, start, null, null).
+transition(init, idle, init_ok, null, null).
+transition(idle, monitoring, begin_monitoring, null, null).
+transition(init, error_diagnosis, init_crash, null, init_err_msg).
+transition(error_diagnosis, init, null, 'retry < 3', retry_init).
+transition(error_diagnosis, safe_shutdown, null, 'retry => 3', shutdown).
+transition(safe_shutdown, dormant, sleep, null, null).
+transition(idle, error_diagnosis, idle_crash, null, idle_err_msg).
+transition(error_diagnosis, idle, idle_rescue, null, null).
+transition(monitoring, error_diagnosis, monitor_crash, null, moni_err_msg).
+transition(error_diagnosis, monitoring, moni_rescue, null, null).
+
+% Transitions within init state
+transition(boot_hk, senchk, hw_ok, null, null).
+transition(senchk, tchk, senok, null, null).
+transition(tchk, psichk, t_ok, null, null).
+transition(psichk, ready, psi_ok, null, null).
+
+
+
+
+
+
+
+
+
 
 
