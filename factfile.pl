@@ -82,6 +82,21 @@ transition(tchk, psichk, t_ok, null, null).
 transition(psichk, ready, psi_ok, null, null).
 
 
+% Transitions within monitoring state
+transition(monidle, regulate_environment, no_contagion, null, null).
+transition(regulate_environment, monidle, after_100ms, null, null).
+transition(monidle, lockdown, contagion_alert, null, FACILITY_CRIT_MESG).
+transition(lockdown, monidle, purge_succ, null, null).
+
+% Transitions within lockdown state
+transition(prep_vpurge, alt_temp, initiate_purge, null, lock_doors).
+transition(prep_vpurge, alt_psi, initiate_purge, null, lock_doors).
+transition(alt_temp, risk_assess, tcyc_comp, null, null).
+transition(alt_psi, risk_assess, psicyc_comp, null, null).
+transition(risk_assess, prep_vpurge, null, 'risk > 1%', null).
+transition(risk_assess, safe_status, null, 'risk < 1%', unlock_doors).
+transition(safe_status, exit, null, null, null).
+
 
 
 
