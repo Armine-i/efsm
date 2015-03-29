@@ -21,13 +21,13 @@ all_init_states(L):-
 get_starting_state(State):- 
 
 get_guards(Ret):- findall(Guard, transition(_, _, _, Guard, _), L).
-			            list_to_set(L, Ret).
+		  list_to_set(L, Ret).
 
 get_events(Ret):- findall(Event, transition(_, _, Event, _, _), L).
-				        	list_to_set(L, Ret).
+		  list_to_set(L, Ret).
 
 get_actions(Ret):- findall(Action, transition(_, _, _, _, Action), L).
-				          list_to_set(L, Ret).
+		     list_to_set(L, Ret).
 
 state_is_reflexive(State):- 
 
