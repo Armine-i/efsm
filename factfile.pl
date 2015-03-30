@@ -67,7 +67,7 @@ transition(dormant, init, start, null, null).
 transition(init, idle, init_ok, null, null).
 transition(idle, monitoring, begin_monitoring, null, null).
 transition(init, error_diagnosis, init_crash, null, init_err_msg).
-transition(error_diagnosis, init, null, 'retry < 3', retry_init).
+transition(error_diagnosis, init, null, 'retry < 3', retry_init;'retry++').
 transition(error_diagnosis, safe_shutdown, null, 'retry => 3', shutdown).
 transition(safe_shutdown, dormant, sleep, null, null).
 transition(idle, error_diagnosis, idle_crash, null, idle_err_msg).
@@ -85,8 +85,8 @@ transition(psichk, ready, psi_ok, null, null).
 % Transitions within monitoring state
 transition(monidle, regulate_environment, no_contagion, null, null).
 transition(regulate_environment, monidle, after_100ms, null, null).
-transition(monidle, lockdown, contagion_alert, null, FACILITY_CRIT_MESG).
-transition(lockdown, monidle, purge_succ, null, null).
+transition(monidle, lockdown, contagion_alert, null, FACILITY_CRIT_MESG;'inlockdown=true').
+transition(lockdown, monidle, purge_succ, null, 'inlockdown=false').
 
 % Transitions within lockdown state
 transition(prep_vpurge, alt_temp, initiate_purge, null, lock_doors).
