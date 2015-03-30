@@ -85,7 +85,7 @@ transition(psichk, ready, psi_ok, null, null).
 % Transitions within monitoring state
 transition(monidle, regulate_environment, no_contagion, null, null).
 transition(regulate_environment, monidle, after_100ms, null, null).
-transition(monidle, lockdown, contagion_alert, null, FACILITY_CRIT_MESG;'inlockdown=true').
+transition(monidle, lockdown, contagion_alert, null, facility_crit_mesg;'inlockdown=true').
 transition(lockdown, monidle, purge_succ, null, 'inlockdown=false').
 
 % Transitions within lockdown state
